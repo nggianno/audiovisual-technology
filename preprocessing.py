@@ -20,7 +20,7 @@ DIR = '/home/user/genres'
 def load_data():
     label = []
     zero_crossings = []
-    #spectral_centroids = []
+    spectral_centroids = []
     mfccs = []
 
     for file in os.listdir(DIR):
@@ -43,6 +43,6 @@ def load_data():
             mf = librosa.feature.mfcc(data, sr=sampling_rate)
             mfccs.append(mf)
 
-    return label, zero_crossings, sc, mfccs
+    return label, zero_crossings, spectral_centroids, mfccs
 
-(label, zero_crossings, sc, mfccs) = load_data()
+(label, zero_crossings, spectral_centroids, mfccs) = load_data()
