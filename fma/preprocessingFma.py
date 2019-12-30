@@ -62,10 +62,10 @@ def make_tracks_dataset(tracks):
 
 if __name__=='__main__':
      #set directory paths
-     TRACK_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/tracks.csv'
-     GENRE_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/genres.csv'
-     FEATURE_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/features.csv'
-     ECH0NEST_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/echonest.csv'
+     TRACK_PATH = 'C:/Users/ody/Desktop/fmaMetadata/tracks.csv'
+     GENRE_PATH = 'C:/Users/ody/Desktop/fmaMetadata/genres.csv'
+     FEATURE_PATH = 'C:/Users/ody/Desktop/fmaMetadata/features.csv'
+     ECH0NEST_PATH = 'C:/Users/ody/Desktop/fmaMetadata/echonest.csv'
 
 
      #csv to dataframe
@@ -78,9 +78,11 @@ if __name__=='__main__':
      """make a dataset of 400 * 4 categories(POP,ROCK,CLASSICAL,HIP-HOP)"""
 
      final = make_tracks_dataset(tracks)
-     print(final)
-
-
+     
+     final.rename(columns={"zcr.2": "zcr"}, inplace=True)
+     final.rename(columns={"spectral_rolloff.2": "spectral_rollof"}, inplace=True)
+     final.rename(columns={"spectral_centroid.2": "spectral_centroid"}, inplace=True)
+     print(final.head())  
 
 
 
