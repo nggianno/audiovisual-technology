@@ -46,3 +46,11 @@ def load_data():
     return label, zero_crossings, spectral_centroids, mfccs
 
 (label, zero_crossings, spectral_centroids, mfccs) = load_data()
+
+#save the labels to a txt file
+with open("labels.txt", "w") as f:
+    for item in label:
+        f.write("%s\n" % item)
+with open("zero_crossings.txt", "w") as f:
+    for item in zero_crossings:
+        f.write("%s\n" % item)
