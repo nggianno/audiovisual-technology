@@ -55,17 +55,23 @@ def make_tracks_dataset(tracks):
      final_dataset = final_dataset.append(pop)
      final_dataset = final_dataset.append(rock)
      final_dataset.reset_index(inplace=True)
-
+     final_dataset.drop(columns='index', inplace=True)
 
      return final_dataset
+
+def extract_to_csv(df):
+
+      df.to_csv(path_or_buf='/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final.csv')
+
+      return 
 
 
 if __name__=='__main__':
      #set directory paths
-     TRACK_PATH = 'C:/Users/ody/Desktop/fmaMetadata/tracks.csv'
-     GENRE_PATH = 'C:/Users/ody/Desktop/fmaMetadata/genres.csv'
-     FEATURE_PATH = 'C:/Users/ody/Desktop/fmaMetadata/features.csv'
-     ECH0NEST_PATH = 'C:/Users/ody/Desktop/fmaMetadata/echonest.csv'
+     TRACK_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/tracks.csv'
+     GENRE_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/genres.csv'
+     FEATURE_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/features.csv'
+     ECH0NEST_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/echonest.csv'
 
 
      #csv to dataframe
@@ -82,7 +88,8 @@ if __name__=='__main__':
      final.rename(columns={"zcr.2": "zcr"}, inplace=True)
      final.rename(columns={"spectral_rolloff.2": "spectral_rollof"}, inplace=True)
      final.rename(columns={"spectral_centroid.2": "spectral_centroid"}, inplace=True)
-     print(final.head())  
+     print(final.head())
+     extract_to_csv(final)
 
 
 
