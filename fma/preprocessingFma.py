@@ -19,10 +19,10 @@ def make_tracks_dataset(tracks):
      clean_tracks.drop(clean_tracks.index[0], inplace=True)
      print(clean_tracks.shape)
      # clean_na_tracks : tracks with no NAN in column "genre_top"
-     clean_na_tracks = clean_tracks.dropna()
-     print(clean_na_tracks.shape)
+     #clean_na_tracks = clean_tracks.dropna()
+     print(clean_tracks.shape)
      # songs of each genre
-     frequencies = clean_na_tracks['genre_top'].value_counts()
+     frequencies = clean_tracks['genre_top'].value_counts()
      print(frequencies)  # this is Series.obj : arrays with strings ,numbers etc
 
      my_genres = pd.array(frequencies.index.values)
@@ -32,16 +32,32 @@ def make_tracks_dataset(tracks):
      # so we will exclude the last one from freq ( < 100 songs )
      tracks = pd.DataFrame()
 
-     for x in my_genres[0:15]:
-          songs = clean_na_tracks.loc[clean_na_tracks['genre_top'] == x]
+     selected_genres = ['Pop','Rock','Hip-Hop','Classical']
+     for i in selected_genres:
+          songs = clean_tracks.loc[clean_tracks['genre_top'] == i]
           # keep the first 100 songs
-          songs = songs.head(100)
+          songs = songs.head(1000)
           tracks = tracks.append(songs)
 
      tracks.reset_index(inplace=True)
      tracks.drop(columns='index', inplace=True)
+     tracks_final = tracks.merge(features, on='track_id', how='inner')
+     tracks = pd.DataFrame(tracks_final)
+     dataset = tracks[['track_id', 'genre_top', 'zcr.2', 'spectral_centroid.2', 'spectral_rolloff.2']]
+     classical = dataset[dataset['genre_top'] == 'Classical'].head(400)
+     rock = dataset[dataset['genre_top'] == 'Rock'].head(400)
+     hip_hop = dataset[dataset['genre_top'] == 'Hip-Hop'].head(400)
+     pop = dataset[dataset['genre_top'] == 'Pop'].head(400)
 
-     return tracks
+     final_dataset = pd.DataFrame()
+     final_dataset = final_dataset.append(classical)
+     final_dataset = final_dataset.append(hip_hop)
+     final_dataset = final_dataset.append(pop)
+     final_dataset = final_dataset.append(rock)
+     final_dataset.reset_index(inplace=True)
+
+
+     return final_dataset
 
 
 if __name__=='__main__':
@@ -59,14 +75,12 @@ if __name__=='__main__':
      echonest = pd.read_csv(ECH0NEST_PATH,header = 2)
 
      (tracks,echonest,features) = preprocess_csv_files(tracks,echonest,features)
-     tracks = make_tracks_dataset(tracks)
-     print(tracks.columns)
-     print(genres.columns)
-     # our dataset is " tracks  "
-     # each genre has 100 songs so 15 genres x 100 songs = 1500
+     """make a dataset of 400 * 4 categories(POP,ROCK,CLASSICAL,HIP-HOP)"""
 
-     print(tracks)
-     print(len(tracks))
+     final = make_tracks_dataset(tracks)
+     print(final)
+     
+
 
 
 
