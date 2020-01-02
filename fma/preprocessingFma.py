@@ -35,7 +35,7 @@ def make_tracks_dataset(tracks):
      selected_genres = ['Pop','Rock','Hip-Hop','Classical']
      for i in selected_genres:
           songs = clean_tracks.loc[clean_tracks['genre_top'] == i]
-          # keep the first 100 songs
+          # keep the first 1000 songs
           songs = songs.head(1000)
           tracks = tracks.append(songs)
 
@@ -63,7 +63,7 @@ def extract_to_csv(df):
 
       df.to_csv(path_or_buf='/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final.csv')
 
-      return 
+      return
 
 
 if __name__=='__main__':
