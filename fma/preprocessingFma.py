@@ -20,7 +20,6 @@ def make_tracks_dataset(tracks):
      print(clean_tracks.shape)
      # clean_na_tracks : tracks with no NAN in column "genre_top"
      #clean_na_tracks = clean_tracks.dropna()
-     print(clean_tracks.shape)
      # songs of each genre
      frequencies = clean_tracks['genre_top'].value_counts()
      print(frequencies)  # this is Series.obj : arrays with strings ,numbers etc
@@ -43,7 +42,7 @@ def make_tracks_dataset(tracks):
      tracks.drop(columns='index', inplace=True)
      tracks_final = tracks.merge(features, on='track_id', how='inner')
      tracks = pd.DataFrame(tracks_final)
-     dataset = tracks[['track_id', 'genre_top', 'zcr.2', 'spectral_centroid.2', 'spectral_rolloff.2']]
+     dataset = tracks[['track_id', 'genre_top', 'zcr.2','rmse.2','spectral_centroid.2','spectral_bandwidth.2','spectral_rolloff.2']]
      classical = dataset[dataset['genre_top'] == 'Classical'].head(400)
      rock = dataset[dataset['genre_top'] == 'Rock'].head(400)
      hip_hop = dataset[dataset['genre_top'] == 'Hip-Hop'].head(400)
@@ -80,16 +79,21 @@ if __name__=='__main__':
      features = pd.read_csv(FEATURE_PATH)
      echonest = pd.read_csv(ECH0NEST_PATH,header = 2)
 
+     print(features.columns)
      (tracks,echonest,features) = preprocess_csv_files(tracks,echonest,features)
      """make a dataset of 400 * 4 categories(POP,ROCK,CLASSICAL,HIP-HOP)"""
 
      final = make_tracks_dataset(tracks)
      
      final.rename(columns={"zcr.2": "zcr"}, inplace=True)
+     final.rename(columns={"rmse.2": "rmse"}, inplace=True)
      final.rename(columns={"spectral_rolloff.2": "spectral_rollof"}, inplace=True)
      final.rename(columns={"spectral_centroid.2": "spectral_centroid"}, inplace=True)
+     final.rename(columns={"spectral_bandwidth.2": "spectral_bandwidth"}, inplace=True)
+
      print(final.head())
-     extract_to_csv(final)
+
+     #extract_to_csv(final)
 
 
 
