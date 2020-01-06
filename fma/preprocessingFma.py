@@ -84,7 +84,7 @@ if __name__=='__main__':
      """make a dataset of 400 * 4 categories(POP,ROCK,CLASSICAL,HIP-HOP)"""
 
      final = make_tracks_dataset(tracks)
-     
+
      final.rename(columns={"zcr.2": "zcr"}, inplace=True)
      final.rename(columns={"rmse.2": "rmse"}, inplace=True)
      final.rename(columns={"spectral_rolloff.2": "spectral_rollof"}, inplace=True)
