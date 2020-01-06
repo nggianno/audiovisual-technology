@@ -59,10 +59,10 @@ def extract_to_csv(df):
 
 if __name__=='__main__':
      #set directory paths
-     TRACK_PATH = './data/tracks.csv'
-     GENRE_PATH = './data/genres.csv'
-     FEATURE_PATH = './data/features.csv'
-     ECH0NEST_PATH = './data/echonest.csv'
+     TRACK_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/tracks.csv'
+     GENRE_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/genres.csv'
+     FEATURE_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/features.csv'
+     ECH0NEST_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata//echonest.csv'
 
 
      #csv to dataframe
@@ -83,13 +83,13 @@ if __name__=='__main__':
              p = p.join(features[column])
   
      c = pd.array(p.columns)
-     # 
+     #
      final = make_tracks_dataset(tracks)
 
      final.rename(columns={"zcr.2": "zcr"}, inplace=True)
      final.rename(columns={"spectral_rolloff.2": "spectral_rollof"}, inplace=True)
      final.rename(columns={"spectral_centroid.2": "spectral_centroid"}, inplace=True)
      print(final.head())
-     extract_to_csv(final)
+     #extract_to_csv(final)
 
 
