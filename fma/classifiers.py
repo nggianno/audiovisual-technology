@@ -46,6 +46,16 @@ def knn_classifier(X_train,y_train,X_test):
 
     return prediction
 
+def hierrarchical_clustering(X_train,y_train,X_test):
+
+    cluster = AgglomerativeClustering(n_clusters=4, affinity='euclidean', linkage='ward')
+    cluster.fit_predict(X_train)
+    #plot the clusters with the first two dimensions
+    plt.figure(figsize=(10, 7))
+    plt.scatter(X_train.iloc[:,1], X_train.iloc[:,2], c=cluster.labels_, cmap='rainbow')
+    plt.show()
+    return(cluster)
+
 def plot_cm(y_test,y_pred):
 
     cm = metrics.confusion_matrix(y_test, y_pred, labels=['Pop','Rock','Hip-Hop','Classical'])

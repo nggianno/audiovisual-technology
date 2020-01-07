@@ -22,9 +22,11 @@ def load_data():
     zero_crossings = []
     spectral_centroids = []
     mfccs = []
-
+    mels = []
+    
     for file in os.listdir(DIR):
         file_path = os.path.join(DIR, file)
+        i=0
         for wav in os.listdir(file_path):
             wav_path = os.path.join(file_path,wav)
             #add the songs and the labels to lists
@@ -43,6 +45,13 @@ def load_data():
             mf = librosa.feature.mfcc(data, sr=sampling_rate)
             mfccs.append(mf)
 
+            #calcaulate the spectrogram for every track
+            ps = librosa.feature.melspectrogram(y=data, sr=sampling_rate, n_mels=128)
+            mels = pd.DataFrame(ps))
+            #make a csv file for every spectrogram (an array of 129x1022 elements)
+            mels.to_csv(path_or_buf='/home/user/genres/spectrogram' + file + str(i) + '.csv')
+            i+=1 
+            
     return label, zero_crossings, spectral_centroids, mfccs
 
 (label, zero_crossings, spectral_centroids, mfccs) = load_data()
