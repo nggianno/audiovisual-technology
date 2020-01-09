@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn import preprocessing
+from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn import metrics
@@ -15,6 +16,8 @@ from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier,GradientB
 def load_data(path):
     data = pd.read_csv(path)
     data.drop('Unnamed: 0',axis=1,inplace=True)
+    #for gtzan
+    # data.drop('',axis=1,inplace=True)
 
     return data
 
@@ -26,6 +29,14 @@ def naive_bayes_classifier(X_train,y_train,X_test):
     gnb.fit(X_train, y_train)
     #Predict the response for test dataset
     prediction = gnb.predict(X_test)
+
+    return prediction
+
+def logistic_regression(X_train,y_train,X_test):
+
+    clf = linear_model.LogisticRegression(C=1.0)
+    clf.fit(X_train, y_train)
+    prediction = clf.predict(X_test)
 
     return prediction
 
@@ -72,8 +83,8 @@ def plot_cm(y_test,y_pred,method):
     cm = metrics.confusion_matrix(y_test, y_pred, labels=['Pop','Rock','Hip-Hop','Classical'])
     print(metrics.classification_report(y_test,y_pred,labels=['Pop','Rock','Hip-Hop','Classical']))
     print(cm)
-    cm_df = pd.DataFrame(cm,index=['Classical','Rock','Hip-Hop',"Pop"],
-                     columns=['Classical','Rock','Hip-Hop',"Pop"])
+    cm_df = pd.DataFrame(cm,index=['Pop','Rock','Hip-Hop','Classical'],
+                     columns=['Pop','Rock','Hip-Hop','Classical'])
     fig = plt.figure()
     ax = fig.add_subplot(111)
     sns.heatmap(cm_df, annot=True,linewidths=.2,fmt="d")
@@ -88,7 +99,13 @@ def plot_cm(y_test,y_pred,method):
 
 if __name__ == '__main__':
 
+    #labels = ['Hip-Hop', 'Rock', 'Electronic', 'Classical']---final6
+    #labels = ['Pop','Rock','Hip-Hop','Classical'] ---final4
+    #labels = ['Pop', 'Rock', 'Electronic', 'Classical'] ---final5
+    #labels = ['blues','classical','country','disco','hiphop','jazz','metal','pop','reggae','rock']---gtzan
+
     DATA_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final3.csv'
+    GTZAN_PATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/gtzan-metadata.csv'
     TEST_SIZE = 0.2
     # read dataset
     dataset = load_data(DATA_PATH)
@@ -97,6 +114,8 @@ if __name__ == '__main__':
     # pass input columns to X & target column to y
     y = dataset['genre_top']
     X = dataset.drop('genre_top', axis=1)
+    #y = dataset['label']
+    #X = dataset.drop('label', axis=1)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TEST_SIZE)
     y_pred1 = naive_bayes_classifier(X_train,y_train,X_test)
@@ -104,11 +123,13 @@ if __name__ == '__main__':
     y_pred3 = random_forest(X_train,y_train,X_test)
     y_pred4 = adaboost(X_train,y_train,X_test)
     y_pred5 = gradient_boost(X_train,y_train,X_test)
-    y_pred6 = svm_classifier(X_train,y_train,X_test)
+    #y_pred6 = svm_classifier(X_train,y_train,X_test)
+    y_pred7 = logistic_regression(X_train,y_train,X_test)
 
     plot_cm(y_test,y_pred1,method = 'Naive-Bayes')
     plot_cm(y_test,y_pred2,method = 'KNN')
     plot_cm(y_test,y_pred3,method = 'RandomForest')
     plot_cm(y_test,y_pred4,method = 'Adaboost')
     plot_cm(y_test,y_pred5,method = 'GradientBoost')
-    plot_cm(y_test,y_pred6,method = 'SVM')
+    #plot_cm(y_test,y_pred6,method = 'SVM')
+    plot_cm(y_test,y_pred7,method='Logistic Regression')

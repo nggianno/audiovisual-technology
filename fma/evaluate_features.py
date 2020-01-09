@@ -49,24 +49,33 @@ def feature_selection_metrics(input,target):
 
     mutual_info = feature_selection.mutual_info_classif(input,target)
     print(mutual_info)
-    plt.bar(range(38), mutual_info)
-    plt.xticks(range(38), input.columns, rotation='vertical')
+    plt.bar(range(len(input.columns)), mutual_info)
+    plt.xticks(range(len(input.columns)), input.columns, rotation='vertical')
     plt.figure(1)
     plt.title('Mutual information for each feature')
     plt.xlabel('Features')
     plt.ylabel('Mutual Information')
     plt.show()
 
-    selector = feature_selection.SelectKBest(k=10)
+    selector = feature_selection.SelectKBest(k=4)
     selector.fit(input,target)
     scores = -np.log10(selector.pvalues_)
     plt.figure(2)
-    plt.bar(range(38), scores)
-    plt.xticks(range(38), input.columns, rotation='vertical')
+    plt.bar(range(len(input.columns)), scores)
+    plt.xticks(range(len(input.columns)), input.columns, rotation='vertical')
     plt.title('10 best feature selection barplot')
     plt.xlabel('Features')
     plt.ylabel('Scores')
     plt.show()
+
+    # model = LogisticRegression()
+    # rfe = RFE(model, 4)
+    # fit = rfe.fit(input, target)
+    # print(input.columns)
+    # truth_table = fit.support_
+    # #input.columns[truth_table == True]
+    # best_features = np.array(input.columns[truth_table == True])
+    # cleaned_dataset = input[best_features]
 
     model = ExtraTreesClassifier()
     model.fit(input, target)
@@ -85,7 +94,6 @@ def feature_selection_metrics(input,target):
     print(fit.components_)
 
 
-
 if __name__ == '__main__':
     # csv to dataframe
 
@@ -100,13 +108,13 @@ if __name__ == '__main__':
 
 
     #ensemblers(X,y)
-    #feature_selection_metrics(X,y)
+    feature_selection_metrics(X,y)
 
     """after running feature_selection_metrics we see that tonnetz gives weak info so we drop the respective columns"""
     data.drop(labels=data.ix[:, 'tonnetz.12':'tonnetz.17'].columns, axis=1, inplace=True)
     print(data.columns)
 
-    data.to_csv(path_or_buf='/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final3.csv')
+    #data.to_csv(path_or_buf='/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final3.csv')
 
 
 
