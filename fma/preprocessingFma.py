@@ -56,6 +56,29 @@ def extract_to_csv(df):
 
       return 
 
+def merge_echonest(echo,tracks,features):
+	echo_test=echo.loc[:,:'valence']
+	echo_test=echo_test.merge(tracks[['track_id','genre_top']],on='track_id',how='inner')
+	echo_test=echo_test.merge(features,on='track_id',how='inner')
+	echo_test['genre_top'].value_counts()
+	
+	echo_test= echo_test.sample(frac=1).reset_index(drop=True)
+     
+	#  selected_genres :
+	# 'Pop','Rock','Hip-Hop','Classical'
+	max_tracks_each_genre = 450 # choose how many songs you will 
+	genre1 = echo_test[echo_test['genre_top'] == 'Electronic'].head(max_tracks_each_genre)
+	genre2 = echo_test[echo_test['genre_top'] == 'Rock'].head(max_tracks_each_genre)
+	genre3 = echo_test[echo_test['genre_top'] == 'Hip-Hop'].head(max_tracks_each_genre)
+	genre4 = echo_test[echo_test['genre_top'] == 'Folk']
+	# append each to our final dataset 
+     
+	final = pd.DataFrame()
+	final = final.append([genre1,genre2,genre3,genre4])
+	
+	return final
+	
+
 
 if __name__=='__main__':
      #set directory paths
