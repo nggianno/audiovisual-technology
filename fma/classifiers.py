@@ -10,7 +10,7 @@ import seaborn as sns
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier,GradientBoostingClassifier
-
+from sklearn.cluster import AgglomerativeClustering
 
 
 def load_data(path):
@@ -56,6 +56,17 @@ def knn_classifier(X_train,y_train,X_test):
     prediction = knn.predict(X_test)
 
     return prediction
+
+def hierrarchical_clustering(X_train,y_train,X_test):
+
+    cluster = AgglomerativeClustering(n_clusters=4, affinity='euclidean', linkage='ward')
+    cluster.fit_predict(X_train)
+    print(X_train)
+    plt.figure(figsize=(10, 7))
+    plt.scatter(X_train.iloc[:,1], X_train.iloc[:,2], c=cluster.labels_, cmap='rainbow')
+    plt.show()
+    
+    return(cluster)
 
 def random_forest(X_train,y_train,X_test):
     clf = RandomForestClassifier(n_estimators=100, max_features="auto", random_state=42)
