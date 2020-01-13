@@ -1,21 +1,12 @@
-import IPython.display as ipd
 import os
 import pandas as pd
 import librosa.display
-import glob
 import matplotlib.pyplot as plt
-
-DIR = '/home/user/genres'
-
-#play the wav file
-#ipd.Audio('/home/user/genres/blues/blues.00000.wav')
+import numpy as np
 
 
-#plot the wav file
-#x, sr = librosa.load('/home/user/blues/blues.00000.wav')
-#plt.figure(figsize=(12, 4))
-#librosa.display.waveplot(data, sr=sampling_rate)
-#plt.show()
+DIR = '/home/user/Downloads/genres'
+
 
 def load_data():
     label = []
@@ -23,8 +14,8 @@ def load_data():
     spectral_centroids = []
     mfccs = []
     mels = []
-    
-    for file in os.listdir(DIR):
+    list = ['classical','hiphop','pop','rock']
+    for file in list:
         file_path = os.path.join(DIR, file)
         i=0
         for wav in os.listdir(file_path):
@@ -47,14 +38,20 @@ def load_data():
 
             #calcaulate the spectrogram for every track
             ps = librosa.feature.melspectrogram(y=data, sr=sampling_rate, n_mels=128)
-            mels = pd.DataFrame(ps))
-            #make a csv file for every spectrogram (an array of 129x1022 elements)
-            mels.to_csv(path_or_buf='/home/user/genres/spectrogram' + file + str(i) + '.csv')
-            i+=1 
+            # save the spectrograms as png files
+            ps = librosa.power_to_db(ps, ref=np.max)
+            librosa.display.specshow(ps, x_axis='time', y_axis='mel', sr=sampling_rate, fmax=8000)
+            plt.colorbar(format='%+2.0f dB')
+            plt.savefig('/home/user/genres/spectogram' +str(i) + '.png')
+            i+=1
+            # save the spectrograms as csv files
+            #mels.append(np.array(ps))
+            #mels = pd.DataFrame(ps)
+            #mels.to_csv(path_or_buf='/home/rigas/Downloads/genres/hiphop_spectogram/spectrogram' +'hiphop' +str(i) + '.csv')
             
-    return label, zero_crossings, spectral_centroids, mfccs
+    return label, zero_crossings,spectral_centroids,mfccs,mels
 
-(label, zero_crossings, spectral_centroids, mfccs) = load_data()
+(label, zero_crossings,spectral_centroids,mfccs,mels) = load_data()
 
 #save the labels to a txt file
 with open("labels.txt", "w") as f:
