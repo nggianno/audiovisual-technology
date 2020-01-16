@@ -18,6 +18,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import VotingClassifier
 from sklearn import feature_selection
 from sklearn.decomposition import PCA
+from sklearn.feature_selection import RFE
+
 
 
 
@@ -68,14 +70,14 @@ def feature_selection_metrics(input,target):
     plt.ylabel('Scores')
     plt.show()
 
-    # model = LogisticRegression()
-    # rfe = RFE(model, 4)
-    # fit = rfe.fit(input, target)
-    # print(input.columns)
-    # truth_table = fit.support_
-    # #input.columns[truth_table == True]
-    # best_features = np.array(input.columns[truth_table == True])
-    # cleaned_dataset = input[best_features]
+    model = LogisticRegression()
+    rfe = RFE(model, 4)
+    fit = rfe.fit(input, target)
+    print(input.columns)
+    truth_table = fit.support_
+    input.columns[truth_table == True]
+    best_features = np.array(input.columns[truth_table == True])
+    cleaned_dataset = input[best_features]
 
     model = ExtraTreesClassifier()
     model.fit(input, target)
@@ -93,11 +95,13 @@ def feature_selection_metrics(input,target):
     print("Explained Variance: %s" % fit.explained_variance_ratio_)
     print(fit.components_)
 
+    return cleaned_dataset
+
 
 if __name__ == '__main__':
     # csv to dataframe
-
-    data = pd.read_csv('/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final2.csv')
+    DATAPATH = '/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final8.csv'
+    data = pd.read_csv(DATAPATH)
     data.drop('Unnamed: 0', axis=1, inplace=True)
 
     print(data.head(10))
@@ -114,7 +118,6 @@ if __name__ == '__main__':
     data.drop(labels=data.ix[:, 'tonnetz.12':'tonnetz.17'].columns, axis=1, inplace=True)
     print(data.columns)
 
-    #data.to_csv(path_or_buf='/home/nick/Desktop/yliko_sxolhs/AudioVisual Technology/fma_metadata/final3.csv')
 
 
 
