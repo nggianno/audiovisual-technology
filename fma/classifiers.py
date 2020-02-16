@@ -138,6 +138,8 @@ def plot_cm(y_test,y_pred,method):
 
 if __name__ == '__main__':
 
+    """ Run classifiers on created FMA datasets containing 4 or 8 genres and get the respective results"""
+
     #labels = ['Hip-Hop', 'Rock', 'Electronic', 'Classical']---final6
     #labels = ['Pop','Rock','Hip-Hop','Classical'] ---final4
     #labels = ['Pop', 'Rock', 'Electronic', 'Classical'] ---final5
@@ -161,12 +163,13 @@ if __name__ == '__main__':
     #y = dataset['label']
     #X = dataset.drop('label', axis=1)
 
-    #split the data to training and testing
+    """split the data to training and testing"""
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TEST_SIZE)
     #apply PCA
     PCA_VECTORS = 30
     #X_train,X_test = pca_analysis(X_train, X_test, PCA_VECTORS)
-    #run classification report function to visualize Recall / Precision / F1-Score for each music genre
+
+    """run classification report function to visualize Recall / Precision / F1-Score for each music genre"""
     classification_report(X_train, y_train, X_test, y_test)
 
 
