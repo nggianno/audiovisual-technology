@@ -172,19 +172,21 @@ if __name__ == '__main__':
     """run classification report function to visualize Recall / Precision / F1-Score for each music genre"""
     classification_report(X_train, y_train, X_test, y_test)
 
-
+    """Get predictions for each method"""
     y_pred1 = naive_bayes_classifier(X_train,y_train,X_test)
     y_pred2 = knn_classifier(X_train,y_train,X_test)
     y_pred3 = random_forest(X_train,y_train,X_test)
     y_pred4 = adaboost(X_train,y_train,X_test)
     y_pred5 = gradient_boost(X_train,y_train,X_test)
-    y_pred6 = svm_classifier(X_train,y_train,X_test)
+    #y_pred6 = svm_classifier(X_train,y_train,X_test)
     y_pred7 = logistic_regression(X_train,y_train,X_test)
+
+    """plot confusion matrix"""
 
     plot_cm(y_test,y_pred1,method = 'Naive-Bayes')
     plot_cm(y_test,y_pred2,method = 'KNN')
     plot_cm(y_test,y_pred3,method = 'RandomForest')
     plot_cm(y_test,y_pred4,method = 'Adaboost')
     plot_cm(y_test,y_pred5,method = 'GradientBoost')
-    plot_cm(y_test,y_pred6,method = 'SVM')
+    #plot_cm(y_test,y_pred6,method = 'SVM')
     plot_cm(y_test,y_pred7,method='Logistic Regression')
