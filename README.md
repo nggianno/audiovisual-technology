@@ -12,3 +12,5 @@ In this repo, implementations are based on 2 popular open-source music datasets 
 * **classifiers.py**: implementation and visualization of various classifiers effectiveness on the music gnere classification problem.
 
 **gtzan:**
+* **preprocessing.py**: preprocessing & spectrogram extraction for CNN feeding
+* **cnn_classifier.py**: implementation of CNN model for the classification of music genres
